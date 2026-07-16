@@ -1,7 +1,7 @@
 // app/api/admin/submissions/[id]/approve/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase";
-import { normalizeCompanyName } from "@/lib/dedupe";
+import { normalizeCompanyName, buildFaviconUrl } from "@/lib/dedupe";
 
 export async function POST(
   req: NextRequest,

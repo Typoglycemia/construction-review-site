@@ -173,3 +173,10 @@ export function findDuplicateCandidates(
     return b.score - a.score;
   });
 }
+
+/** 公式サイトのドメインからfaviconのURLを組み立てる(Googleの公開faviconサービスを利用) */
+export function buildFaviconUrl(websiteUrl: string | null | undefined): string | null {
+  const domain = normalizeWebsiteDomain(websiteUrl);
+  if (!domain) return null;
+  return `https://www.google.com/s2/favicons?domain=${domain}&sz=128`;
+}

@@ -34,18 +34,13 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "body_too_long" }, { status: 400 });
   }
 
-const ipForLimit = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+  const ipForLimit = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
   const { success } = await commentRatelimit.limit(ipForLimit);
   if (!success) {
     return NextResponse.json(
       { error: "rate_limited", message: "しばらく時間をおいてから、もう一度お試しください。" },
       { status: 429 }
     );
-  }
-
-  const botOk = await verifyTurnstile(turnstileToken);
-  if (!botOk) {
-    return NextResponse.json({ error: "bot_verification_failed" }, { status: 403 });
   }
 
   const botOk = await verifyTurnstile(turnstileToken);
@@ -85,7 +80,6 @@ const ipForLimit = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? 
     distinctCompaniesCommentedRecently: distinctCompanies,
   });
 
-  // 個人情報・脅迫の疑いが強い場合は即座に拒否(投稿自体させない)
   if (flags.includes("possible_threat")) {
     return NextResponse.json(
       { error: "content_rejected", message: "投稿内容に問題があるため受け付けられません。" },
@@ -103,7 +97,7 @@ const ipForLimit = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? 
       body: commentBody.trim(),
       status,
       risk_score: riskScore,
-	ip_hash: ipHash,
+      ip_hash: ipHash,
     })
     .select()
     .single();
@@ -142,6 +136,5 @@ async function verifyTurnstile(token: string): Promise<boolean> {
     }),
   });
   const data = await resp.json();
-	console.log("Turnstile verify result:", data);
   return data.success === true;
 }
