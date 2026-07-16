@@ -12,6 +12,7 @@ export default function VotePanel({ companyId, initialVotes }: VotePanelProps) {
   const [votes, setVotes] = useState(initialVotes);
   const [submitting, setSubmitting] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
+  const [stamped, setStamped] = useState<"good" | "bad" | null>(null);
 
   const total = votes.goodCount + votes.badCount;
   const goodPct = total > 0 ? Math.round((votes.goodCount / total) * 100) : 0;
@@ -21,7 +22,6 @@ export default function VotePanel({ companyId, initialVotes }: VotePanelProps) {
     setSubmitting(true);
     setMessage(null);
     try {
-      // turnstileToken は実際にはCloudflare Turnstileウィジェットから取得する
       const turnstileToken = (window as any).__turnstileToken ?? "";
       const res = await fetch("/api/votes", {
         method: "POST",
@@ -37,44 +37,80 @@ export default function VotePanel({ companyId, initialVotes }: VotePanelProps) {
         goodCount: v.goodCount + (voteType === "good" ? 1 : 0),
         badCount: v.badCount + (voteType === "bad" ? 1 : 0),
       }));
+      setStamped(voteType);
     } finally {
       setSubmitting(false);
     }
   }
 
   return (
-    <div className="border rounded-lg p-4">
-      <div className="grid grid-cols-2 gap-2 mb-3">
-        <button
+    <div className="border-2 border-ink p-4 bg-white">
+      <div className="grid grid-cols-2 gap-4 mb-4">
+        <StampButton
+          label="良い"
+          color="inspect"
           onClick={() => handleVote("good")}
           disabled={submitting}
-          className="py-4 text-lg font-medium border-2 border-green-600 text-green-700 rounded-lg hover:bg-green-50"
-        >
-          良い！
-        </button>
-        <button
+          active={stamped === "good"}
+        />
+        <StampButton
+          label="悪い"
+          color="seal"
           onClick={() => handleVote("bad")}
           disabled={submitting}
-          className="py-4 text-lg font-medium border-2 border-red-600 text-red-700 rounded-lg hover:bg-red-50"
-        >
-          悪い！
-        </button>
+          active={stamped === "bad"}
+        />
       </div>
-	<TurnstileWidget />
-      <div className="flex h-2 rounded overflow-hidden mb-1">
-        <div className="bg-green-600" style={{ width: `${goodPct}%` }} />
-        <div className="bg-red-600" style={{ width: `${badPct}%` }} />
+
+      <TurnstileWidget />
+
+      <div className="flex h-2 mb-1 border border-ink/30">
+        <div className="bg-inspect" style={{ width: `${goodPct}%` }} />
+        <div className="bg-seal" style={{ width: `${badPct}%` }} />
       </div>
-      <div className="flex justify-between text-sm text-gray-600">
-        <span>
-          良い！ {goodPct}% ({votes.goodCount.toLocaleString()}票)
-        </span>
-        <span>
-          悪い！ {badPct}% ({votes.badCount.toLocaleString()}票)
-        </span>
+      <div className="flex justify-between text-sm font-mono">
+        <span>良い！ {goodPct}%（{votes.goodCount.toLocaleString()}票）</span>
+        <span>悪い！ {badPct}%（{votes.badCount.toLocaleString()}票）</span>
       </div>
-      <p className="text-xs text-gray-400 mt-1">総投票数 {total.toLocaleString()}票</p>
-      {message && <p className="text-sm text-red-600 mt-2">{message}</p>}
+      <p className="text-xs font-mono text-ink/60 mt-1">総投票数 {total.toLocaleString()}票</p>
+      {message && <p className="text-sm text-seal mt-2">{message}</p>}
     </div>
+  );
+}
+
+function StampButton({
+  label,
+  color,
+  onClick,
+  disabled,
+  active,
+}: {
+  label: string;
+  color: "inspect" | "seal";
+  onClick: () => void;
+  disabled: boolean;
+  active: boolean;
+}) {
+  const borderColor = color === "inspect" ? "border-inspect" : "border-seal";
+  const textColor = color === "inspect" ? "text-inspect" : "text-seal";
+
+  return (
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      className={
+        "relative py-6 font-display font-bold text-2xl border-4 rounded-full " +
+        borderColor +
+        " " +
+        textColor +
+        " transition-transform duration-150 ease-out " +
+        (active ? "scale-105 rotate-[-3deg]" : "hover:scale-[1.02]")
+      }
+      style={{
+        boxShadow: active ? "inset 0 0 0 3px currentColor" : undefined,
+      }}
+    >
+      {label}！
+    </button>
   );
 }

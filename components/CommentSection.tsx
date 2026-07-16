@@ -72,7 +72,9 @@ export default function CommentSection({
   return (
     <section className="space-y-4">
       <div className="flex items-center justify-between">
-        <h2 className="font-medium">匿名コメント</h2>
+        <h2 className="text-xl font-bold">
+          匿名コメント <span className="text-steel">{comments.length}件</span>
+        </h2>
         <select
           value={sort}
           onChange={(e) => setSort(e.target.value as SortKey)}
@@ -86,9 +88,9 @@ export default function CommentSection({
         </select>
       </div>
 
-      <div className="space-y-3">
+      <div className="divide-y divide-ink/10">
         {sorted.map((c) => (
-          <div key={c.id} className="border rounded-lg p-3 text-sm">
+          <div key={c.id} className="py-4 text-base">
             <div className="flex items-center gap-2 mb-1">
               <span className="text-gray-600">{c.nickname || "匿名"}</span>
               <VoteBadge sentiment={c.sentiment} />

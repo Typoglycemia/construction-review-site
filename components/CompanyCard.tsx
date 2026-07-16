@@ -16,7 +16,7 @@ export default function CompanyCard({ company }: CompanyCardProps) {
   return (
     <Link
       href={`/companies/${company.id}`}
-      className="block border rounded-lg p-3 hover:shadow-sm transition"
+      className="block bg-white border-2 border-ink/20 p-3 hover:border-ink/40 transition"
     >
       <div className="w-full aspect-square relative bg-gray-50 rounded mb-2 flex items-center justify-center overflow-hidden">
         {company.logo_url ? (

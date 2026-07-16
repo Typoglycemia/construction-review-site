@@ -136,7 +136,7 @@ export default async function TopPage() {
         </p>
         <Link
           href="/companies/new"
-          className="inline-block bg-black text-white px-6 py-3 rounded-lg"
+          className="block bg-white border-2 border-ink/20 p-3 hover:bg-paper"
         >
           業者を新しく追加する
         </Link>
@@ -155,9 +155,9 @@ function RankingBlock({
   items: any[];
 }) {
   return (
-    <div className="border rounded-lg p-4">
+    <div className="bg-white border-2 border-ink/20 p-4">
       <div className="flex justify-between items-center mb-3">
-        <h2 className="text-lg font-medium">{title}</h2>
+        <h2 className="text-lg font-bold text-ink">{title}</h2>
         <Link href={`/ranking/${type}`} className="text-sm text-gray-500">
           もっと見る
         </Link>

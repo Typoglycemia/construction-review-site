@@ -85,8 +85,8 @@ export default async function CompanyDetailPage({
           )}
         </div>
         <div>
-          <h1 className="text-xl font-semibold">{company.name}</h1>
-          <p className="text-sm text-gray-500">
+          <h1 className="text-3xl font-black">{company.name}</h1>
+          <p className="text-base text-ink/60 mt-1">
             {company.prefecture}
             {company.city} ・ {company.category ?? "業種未設定"}
           </p>

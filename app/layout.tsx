@@ -18,13 +18,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ja">
       <head>
+        <link
+          href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Yuji+Syuku&display=swap"
+          rel="stylesheet"
+        />
         <script
           src="https://challenges.cloudflare.com/turnstile/v0/api.js"
           async
           defer
         />
       </head>
-      <body className="min-h-screen flex flex-col bg-white text-gray-900">
+      <body className="min-h-screen flex flex-col bg-white text-ink font-display">
         <Header />
         <div className="flex-1">{children}</div>
         <Footer />

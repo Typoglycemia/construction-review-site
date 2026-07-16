@@ -12,8 +12,8 @@ const LINKS = [
 
 export default function Footer() {
   return (
-    <footer className="border-t mt-12">
-      <div className="max-w-5xl mx-auto px-4 py-8 text-sm text-gray-500 space-y-4">
+    <footer className="border-t-2 border-ink/20 bg-white text-ink mt-12">
+      <div className="max-w-5xl mx-auto px-4 py-8 text-sm text-ink/70 space-y-4">
         <p>
           このサイトは、全国の建設会社・工務店・リフォーム会社などについて、ユーザーが匿名で
           「良い！」「悪い！」の投票やコメントを投稿できるサービスです。投稿者の個人情報や
@@ -23,7 +23,7 @@ export default function Footer() {
         </p>
         <nav className="flex flex-wrap gap-x-4 gap-y-2">
           {LINKS.map((l) => (
-            <Link key={l.href} href={l.href} className="hover:underline">
+            <Link key={l.href} href={l.href} className="text-paper hover:text-caution hover:underline">
               {l.label}
             </Link>
           ))}
