@@ -5,7 +5,7 @@ import { useState } from "react";
 
 const NAV = [
   { href: "/search", label: "業者を検索" },
-  { href: "/ranking/good", label: "ランキング" },
+  { href: "/ranking", label: "ランキング" },
   { href: "/prefecture", label: "都道府県から探す" },
   { href: "/category", label: "業種から探す" },
   { href: "/companies/new", label: "業者を追加" },

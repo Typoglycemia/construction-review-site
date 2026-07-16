@@ -11,6 +11,7 @@ import {
   parseUserAgent,
   cookieConfig,
 } from "@/lib/anonymous";
+import { voteRatelimit } from "@/lib/ratelimit";
 import { calculateVoteRiskScore } from "@/lib/moderation";
 
 // service_role key はサーバー専用。クライアントには絶対に露出させない。
@@ -28,6 +29,16 @@ export async function POST(req: NextRequest) {
 
   if (!companyId || !["good", "bad"].includes(voteType)) {
     return NextResponse.json({ error: "invalid_request" }, { status: 400 });
+  }
+
+// 0. レートリミット(同一IPからの短時間大量アクセスを制限)
+  const ipForLimit = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+  const { success } = await voteRatelimit.limit(ipForLimit);
+  if (!success) {
+    return NextResponse.json(
+      { error: "rate_limited", message: "しばらく時間をおいてから、もう一度お試しください。" },
+      { status: 429 }
+    );
   }
 
   // 1. Turnstile検証(Bot対策)

@@ -11,6 +11,7 @@ import {
   parseUserAgent,
   cookieConfig,
 } from "@/lib/anonymous";
+import { commentRatelimit } from "@/lib/ratelimit";
 import { calculateCommentRiskScore } from "@/lib/moderation";
 
 const supabase = createClient(
@@ -31,6 +32,20 @@ export async function POST(req: NextRequest) {
   }
   if (commentBody.length > MAX_BODY_LENGTH) {
     return NextResponse.json({ error: "body_too_long" }, { status: 400 });
+  }
+
+const ipForLimit = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+  const { success } = await commentRatelimit.limit(ipForLimit);
+  if (!success) {
+    return NextResponse.json(
+      { error: "rate_limited", message: "しばらく時間をおいてから、もう一度お試しください。" },
+      { status: 429 }
+    );
+  }
+
+  const botOk = await verifyTurnstile(turnstileToken);
+  if (!botOk) {
+    return NextResponse.json({ error: "bot_verification_failed" }, { status: 403 });
   }
 
   const botOk = await verifyTurnstile(turnstileToken);

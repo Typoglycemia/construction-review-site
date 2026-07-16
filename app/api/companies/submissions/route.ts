@@ -6,6 +6,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { findDuplicateCandidates, normalizeCompanyName } from "@/lib/dedupe";
 import { hashIdentifier, generateAnonymousIdentifier, cookieConfig } from "@/lib/anonymous";
+import { submissionRatelimit } from "@/lib/ratelimit";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -14,8 +15,21 @@ const supabase = createClient(
 const SALT = process.env.IP_HASH_SALT!;
 
 export async function POST(req: NextRequest) {
+  const ipForLimit = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+  const { success } = await submissionRatelimit.limit(ipForLimit);
+  if (!success) {
+    return NextResponse.json(
+      { error: "rate_limited", message: "しばらく時間をおいてから、もう一度お試しください。" },
+      { status: 429 }
+    );
+  }
+
   const body = await req.json();
   const { name, prefecture, city, phone, websiteUrl, corporateNumber, category, logoUrl, contractorType } = body;
+
+  if (!name?.trim() || !prefecture?.trim()) {
+    return NextResponse.json({ error: "missing_required_fields" }, { status: 400 });
+  }
 
   if (!name?.trim() || !prefecture?.trim()) {
     return NextResponse.json({ error: "missing_required_fields" }, { status: 400 });
