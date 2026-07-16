@@ -28,6 +28,9 @@ export default function Footer() {
             </Link>
           ))}
         </nav>
+	<p className="text-xs text-ink/50">
+          業者情報の一部は「gBizINFO」(経済産業省)のデータを二次利用して掲載しています。
+        </p>
         <p className="text-xs text-gray-400">
           © {new Date().getFullYear()} 下請けドットコム. 掲載されている評価やコメントはユーザーによる
           投稿です。当サイトが特定の業者の品質・安全性・違法性等を保証または断定するものではありません。
