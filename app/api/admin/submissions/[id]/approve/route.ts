@@ -28,7 +28,8 @@ export async function POST(
     website_url: d.websiteUrl,
     corporate_number: d.corporateNumber,
     category: d.category,
-    logo_url: d.logoUrl,
+    logo_url: d.logoUrl || buildFaviconUrl(d.websiteUrl),
+    contractor_type: d.contractorType || "unknown",
     source_type: "user_submission",
     status: "published",
   });

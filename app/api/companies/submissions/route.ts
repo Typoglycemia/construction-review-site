@@ -15,7 +15,7 @@ const SALT = process.env.IP_HASH_SALT!;
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
-  const { name, prefecture, city, phone, websiteUrl, corporateNumber, category, logoUrl } = body;
+  const { name, prefecture, city, phone, websiteUrl, corporateNumber, category, logoUrl, contractorType } = body;
 
   if (!name?.trim() || !prefecture?.trim()) {
     return NextResponse.json({ error: "missing_required_fields" }, { status: 400 });
@@ -79,6 +79,7 @@ export async function POST(req: NextRequest) {
         corporateNumber,
         category,
         logoUrl,
+	contractorType,
       },
       duplicate_candidate_id: mediumMatch?.company.id ?? null,
       anonymous_identifier_hash: identifierHash,

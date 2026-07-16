@@ -79,9 +79,9 @@ export default async function TopPage() {
     <main className="max-w-5xl mx-auto px-4 py-8 space-y-12">
       {/* ファーストビュー */}
       <section className="text-center space-y-4">
-        <h1 className="text-3xl font-semibold">建設会社、良い？悪い？</h1>
-        <p className="text-gray-600">
-          全国の建設会社・工務店・リフォーム会社を匿名投票とコメントでチェック。
+        <h1 className="text-4xl font-brush text-ink">建設会社、良い？悪い？</h1>
+        <p className="text-ink/70 text-lg">
+          発注/請負前に、現場の声を聞けるサイト。
         </p>
         <form action="/search" className="max-w-xl mx-auto">
           <input

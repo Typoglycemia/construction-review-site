@@ -24,6 +24,7 @@ export default function NewCompanyPage() {
     phone: "",
     websiteUrl: "",
     category: "",
+    contractorType: "unknown",
   });
   const [duplicateWarning, setDuplicateWarning] = useState<{
     confidence: "high" | "medium";
@@ -123,6 +124,19 @@ export default function NewCompanyPage() {
                 {c}
               </option>
             ))}
+          </select>
+        </div>
+
+	<div>
+          <label className="text-sm text-gray-600">元請け・下請けの区分</label>
+          <select
+            value={form.contractorType}
+            onChange={(e) => update("contractorType", e.target.value)}
+            className="w-full border rounded px-3 py-2"
+          >
+            <option value="unknown">わからない・両方</option>
+            <option value="prime">元請け</option>
+            <option value="sub">下請け</option>
           </select>
         </div>
 
