@@ -1,5 +1,6 @@
 {
   "crons": [
-    { "path": "/api/cron/ranking-batch", "schedule": "0 6 * * *" }
+    { "path": "/api/cron/ranking-batch", "schedule": "0 6 * * *" },
+    { "path": "/api/cron/duplicate-detection", "schedule": "0 7 * * *" }
   ]
 }
