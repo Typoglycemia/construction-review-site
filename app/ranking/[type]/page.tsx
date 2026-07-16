@@ -24,7 +24,8 @@ const MEDAL_COLORS: Record<number, string> = {
 const CONTRACTOR_LABELS: Record<string, string> = {
   prime: "元請け",
   sub: "下請け",
-  unknown: "すべて",
+  both: "両方",
+  unknown: "不明",
 };
 
 export default async function RankingPage({
@@ -44,8 +45,12 @@ export default async function RankingPage({
     .eq("status", "published")
     .limit(1000);
 
-  if (contractorFilter === "prime" || contractorFilter === "sub") {
-    query = query.eq("contractor_type", contractorFilter);
+  if (contractorFilter === "prime") {
+    query = query.in("contractor_type", ["prime", "both"]);
+  } else if (contractorFilter === "sub") {
+    query = query.in("contractor_type", ["sub", "both"]);
+  } else if (contractorFilter === "both") {
+    query = query.eq("contractor_type", "both");
   }
 
   const { data: companies } = await query;
@@ -75,6 +80,7 @@ export default async function RankingPage({
     { key: "all", label: "すべて" },
     { key: "prime", label: "元請け" },
     { key: "sub", label: "下請け" },
+    { key: "both", label: "両方" },
   ];
 
   return (

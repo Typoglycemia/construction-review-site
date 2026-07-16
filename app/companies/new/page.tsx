@@ -134,9 +134,10 @@ export default function NewCompanyPage() {
             onChange={(e) => update("contractorType", e.target.value)}
             className="w-full border rounded px-3 py-2"
           >
-            <option value="unknown">わからない・両方</option>
+            <option value="unknown">わからない</option>
             <option value="prime">元請け</option>
             <option value="sub">下請け</option>
+            <option value="both">両方</option>
           </select>
         </div>
 
