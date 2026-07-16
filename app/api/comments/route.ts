@@ -7,6 +7,7 @@ import {
   generateAnonymousIdentifier,
   hashIdentifier,
   hashIp,
+  encryptIp,
   parseUserAgent,
   cookieConfig,
 } from "@/lib/anonymous";
@@ -18,6 +19,7 @@ const supabase = createClient(
 );
 
 const SALT = process.env.IP_HASH_SALT!;
+const IP_KEY = process.env.IP_ENCRYPTION_KEY!;
 const MAX_BODY_LENGTH = 1000;
 
 export async function POST(req: NextRequest) {
@@ -43,6 +45,7 @@ export async function POST(req: NextRequest) {
 
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
   const ipHash = hashIp(ip, SALT);
+  const ipEncrypted = ip !== "unknown" ? encryptIp(ip, IP_KEY) : null;
   const ua = req.headers.get("user-agent") ?? "";
   const { deviceType } = parseUserAgent(ua);
 
@@ -85,6 +88,7 @@ export async function POST(req: NextRequest) {
       body: commentBody.trim(),
       status,
       risk_score: riskScore,
+	ip_hash: ipHash,
     })
     .select()
     .single();
@@ -95,6 +99,7 @@ export async function POST(req: NextRequest) {
 
   await supabase.from("access_logs").insert({
     company_id: companyId,
+    ip_address_encrypted: ipEncrypted,
     ip_hash: ipHash,
     user_agent: ua,
     device_type: deviceType,
@@ -122,5 +127,6 @@ async function verifyTurnstile(token: string): Promise<boolean> {
     }),
   });
   const data = await resp.json();
+	console.log("Turnstile verify result:", data);
   return data.success === true;
 }
