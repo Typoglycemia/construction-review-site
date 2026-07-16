@@ -3,17 +3,15 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-
 export const metadata: Metadata = {
   title: {
-    default: "下請けドットコム｜良い？悪い？匿名評価サイト",
+    default: "下請けドットコム｜建築・建設業者の口コミ・評判サイト",
     template: "%s",
   },
   description:
-	"下請けドットコムは、全国の建設会社・工務店・リフォーム会社を匿名投票とコメントでチェックできるクチコミサイトです。",
+    "下請けドットコムは、全国の建築会社・建設会社・工務店・リフォーム会社の口コミ・評判を、匿名投票とコメントでチェックできるサイトです。発注/請負前に、現場の声を聞けます。",
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
 };
-
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ja">

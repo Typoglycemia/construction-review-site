@@ -83,6 +83,9 @@ export default async function TopPage() {
         <p className="text-ink/70 text-lg">
           発注/請負前に、現場の声を聞けるサイト。
         </p>
+	<p className="text-sm text-ink/50">
+          建築・建設・工務店・リフォーム会社の口コミ・評判を、全国の都道府県・業種別に検索できます。
+        </p>
         <form action="/search" className="max-w-xl mx-auto">
           <input
             name="q"
