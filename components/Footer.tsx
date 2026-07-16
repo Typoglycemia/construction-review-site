@@ -29,7 +29,7 @@ export default function Footer() {
           ))}
         </nav>
         <p className="text-xs text-gray-400">
-          © {new Date().getFullYear()} 建設業者クチコミ. 掲載されている評価やコメントはユーザーによる
+          © {new Date().getFullYear()} 下請けドットコム. 掲載されている評価やコメントはユーザーによる
           投稿です。当サイトが特定の業者の品質・安全性・違法性等を保証または断定するものではありません。
         </p>
       </div>

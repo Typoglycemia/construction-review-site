@@ -5,7 +5,7 @@
 import type { Company, VoteSummary } from "@/lib/supabase";
 
 export function buildCompanyPageTitle(company: Company): string {
-  return `${company.name}は良い？悪い？評判・匿名コメント｜建設業者クチコミ`;
+  return `${company.name}は良い？悪い？評判・匿名コメント｜下請けドットコム`;
 }
 
 export function buildCompanyPageDescription(company: Company, votes: VoteSummary): string {

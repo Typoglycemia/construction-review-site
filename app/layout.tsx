@@ -6,11 +6,11 @@ import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: {
-    default: "建設業者クチコミ｜良い？悪い？匿名評価サイト",
+    default: "下請けドットコム｜良い？悪い？匿名評価サイト",
     template: "%s",
   },
   description:
-    "全国の建設会社・工務店・リフォーム会社を匿名投票とコメントでチェックできるクチコミサイトです。",
+	"下請けドットコムは、全国の建設会社・工務店・リフォーム会社を匿名投票とコメントでチェックできるクチコミサイトです。",
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
 };
 

@@ -18,7 +18,7 @@ export default function Header() {
     <header className="sticky top-0 z-50 bg-white border-b">
       <div className="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
         <Link href="/" className="font-semibold text-lg">
-          建設業者クチコミ
+          下請けドットコム
         </Link>
 
         <nav className="hidden md:flex items-center gap-5 text-sm">
